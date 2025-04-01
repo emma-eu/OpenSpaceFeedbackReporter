@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkopenspace=self.webpackChunkopenspace||[]).push([[3744],{3744:(e,p,s)=>{s.r(p),s.d(p,{build:()=>a.b});s(3799),s(58350),s(21390),s(86955),s(66470),s(2687);var a=s(48678)}}]);
