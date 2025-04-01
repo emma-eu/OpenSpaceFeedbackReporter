@@ -47,7 +47,7 @@ export default function InteractiveReporterApp() {
       ]);
 
       const webmap = new WebMap.default({
-        portalItem: { id: "poop" },
+        portalItem: { id: "4b41859317b04d92af10398a0611bd3" },
       });
 
       const view = new MapView.default({
