@@ -47,7 +47,7 @@ export default function InteractiveReporterApp() {
       ]);
 
       const webmap = new WebMap.default({
-        portalItem: { id: "193de866247a4946a17331d2fdefc294" },
+        portalItem: { id: "4b41859317b04d92af10398a0611bd38" },
       });
 
       const view = new MapView.default({
