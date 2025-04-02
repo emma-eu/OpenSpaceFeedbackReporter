@@ -21,7 +21,7 @@ export default function InteractiveReporterApp() {
   const mapRef = useRef(null);
   const legendRef = useRef(null);
   const sketchRef = useRef(null);
-  const [, setView] = useState(null);
+  const viewRef = useRef(null);
 
   const [open, setOpen] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
@@ -50,13 +50,14 @@ export default function InteractiveReporterApp() {
         zoom: 10.5,
       });
 
-      setView(view);
+      viewRef.current = view;
 
       view.when(() => {
         const legend = new Legend({ view });
         if (legendRef.current) legend.container = legendRef.current;
 
         const graphicsLayer = new GraphicsLayer.default();
+        graphicsLayer.title = "User Feedback Layer";
         view.map.add(graphicsLayer);
 
         view.on("click", async (event) => {
@@ -75,19 +76,15 @@ export default function InteractiveReporterApp() {
   }, []);
 
   const startDrawing = async () => {
-    const [Sketch, GraphicsLayer] = await Promise.all([
+    const [Sketch] = await Promise.all([
       import("@arcgis/core/widgets/Sketch"),
-      import("@arcgis/core/layers/GraphicsLayer"),
     ]);
 
-    const view = mapRef.current?.view;
+    const view = viewRef.current;
     if (!view) return;
 
     let graphicsLayer = view.map.layers.find((layer) => layer.title === "User Feedback Layer");
-    if (!graphicsLayer) {
-      graphicsLayer = new GraphicsLayer.default({ title: "User Feedback Layer" });
-      view.map.add(graphicsLayer);
-    }
+    if (!graphicsLayer) return;
 
     const sketch = new Sketch.default({
       layer: graphicsLayer,
