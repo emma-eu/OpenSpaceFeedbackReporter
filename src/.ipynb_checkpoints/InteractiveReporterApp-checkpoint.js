@@ -173,10 +173,10 @@ export default function InteractiveReporterApp() {
     <Box display="flex" flexDirection="column" alignItems="center" p={4} pb={2}>
       <Box width="100%" maxWidth="1250px">
         <Typography variant="h4" gutterBottom>
-          MAG First Draft Centers Map Feedback
+          MAG First Draft Open Space Map Feedback
         </Typography>
         <Typography variant="body1" gutterBottom>
-          To leave feedback, click a feature on the map to leave a comment on that feature, or draw a new feature.
+          To leave feedback, click an existing feature on the map to leave a comment on that feature, or click the "Add a New Feature" button to add a new feature.
         </Typography>
 
         <Box display="flex" gap={2} mb={2}>
