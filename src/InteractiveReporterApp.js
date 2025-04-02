@@ -35,8 +35,8 @@ export default function InteractiveReporterApp() {
   const [organization, setOrganization] = useState("");
   const [comment, setComment] = useState("");
   const [isCenter, setisCenter] = useState(false);
-  const [likesProject, setLikesProject] = useState(false);
-  const [priorityLevel, setPriorityLevel] = useState("");
+ // const [likesProject, setLikesProject] = useState(false);
+ // const [priorityLevel, setPriorityLevel] = useState("");
 
   useEffect(() => {
     const loadMap = async () => {
@@ -140,9 +140,9 @@ export default function InteractiveReporterApp() {
         name,
         organization,
         submittedcomment: comment,
-        is_center: isCenter ? 1 : 0,
-        correct_type: likesProject ? 1 : 0,
-        updated_type: priorityLevel,
+        //is_center: isCenter ? 1 : 0,
+        //correct_type: likesProject ? 1 : 0,
+        //updated_type: priorityLevel,
         submitted_at: new Date().toISOString(),
         related_feature_id: selectedFeature?.attributes?.OBJECTID || null
       },
@@ -201,7 +201,7 @@ export default function InteractiveReporterApp() {
             <DialogContent>
               <TextField label="Your Name" fullWidth margin="dense" value={name} onChange={(e) => setName(e.target.value)} />
               <TextField label="Your City/Organization" fullWidth margin="dense" value={organization} onChange={(e) => setOrganization(e.target.value)} />
-              <TextField label="Add Your Comment Here" fullWidth margin="dense" multiline rows={4} value={comment} onChange={(e) => setComment(e.target.value)} />
+              <TextField label="Add Your Comment Here (Optional)" fullWidth margin="dense" multiline rows={4} value={comment} onChange={(e) => setComment(e.target.value)} />
               {drawnGeometry ? (
                 <FormControl fullWidth sx={{ mb: 1 }}>
                   <InputLabel id="center-label">Center Classification</InputLabel>
@@ -214,21 +214,7 @@ export default function InteractiveReporterApp() {
                 </FormControl>
               ) : (
                 <>
-                  <FormControlLabel control={<Checkbox checked={isCenter} onChange={(e) => setisCenter(e.target.checked)} />} label="This feature meets the characteristics of a center." />
-                  <FormControlLabel control={<Checkbox checked={likesProject} onChange={(e) => setLikesProject(e.target.checked)} />} label="This center is correctly classified." />
-                  <FormGroup>
-                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>If the center is incorrectly classified, select the correct classification</Typography>
-                  </FormGroup>
-                  <FormControl fullWidth margin="dense">
-                    <InputLabel id="center-label">Center Classification</InputLabel>
-                    <Select labelId="center-label" value={priorityLevel} onChange={(e) => setPriorityLevel(e.target.value)}>
-                      <MenuItem value="Metropolitan">Metropolitan</MenuItem>
-                      <MenuItem value="Urban">Urban</MenuItem>
-                      <MenuItem value="City">City</MenuItem>
-                      <MenuItem value="Neighborhood">Neighborhood</MenuItem>
-                      <MenuItem value="NOT A CENTER">This is not a center</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <FormControlLabel control={<Checkbox checked={isCenter} onChange={(e) => setisCenter(e.target.checked)} />} label="This feature could be considered regionally significant open space." />
                 </>
               )}
             </DialogContent>
