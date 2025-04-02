@@ -20,6 +20,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Legend from "@arcgis/core/widgets/Legend"; // ArcGIS Legend widget
+import "@arcgis/core/assets/esri/themes/light/main.css"; // ArcGIS CSS theme
 
 export default function InteractiveReporterApp() {
   const mapRef = useRef(null);
@@ -47,7 +48,7 @@ export default function InteractiveReporterApp() {
       ]);
 
       const webmap = new WebMap.default({
-        portalItem: { id: "4b41859317b04d92af10398a0611bd3" },
+        portalItem: { id: "4b41859317b04d92af10398a0611bd38" },
       });
 
       const view = new MapView.default({
@@ -182,7 +183,7 @@ export default function InteractiveReporterApp() {
           <Button variant="contained" color="primary" onClick={startDrawing}>
             Add A Feature
           </Button>
-          <Button variant="contained" color="primary" onClick={() => alert("Click a feature on the map to comment.")}>
+          <Button variant="contained" color="primary" onClick={() => alert("Click a feature on the map to comment.")}> 
             Comment on an Existing Feature
           </Button>
         </Box>
@@ -202,7 +203,7 @@ export default function InteractiveReporterApp() {
               <TextField label="Your City/Organization" fullWidth margin="dense" value={organization} onChange={(e) => setOrganization(e.target.value)} />
               <TextField label="Add Your Comment Here" fullWidth margin="dense" multiline rows={4} value={comment} onChange={(e) => setComment(e.target.value)} />
               {drawnGeometry ? (
-                <FormControl fullWidth sx={{ mb: 1 }}>>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                   <InputLabel id="center-label">Center Classification</InputLabel>
                   <Select labelId="center-label" value={priorityLevel} onChange={(e) => setPriorityLevel(e.target.value)}>
                     <MenuItem value="Metropolitan">Metropolitan</MenuItem>
