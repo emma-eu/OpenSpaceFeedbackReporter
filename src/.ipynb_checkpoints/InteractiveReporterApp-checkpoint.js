@@ -176,7 +176,7 @@ export default function InteractiveReporterApp() {
           MAG First Draft Open Space Map Feedback
         </Typography>
         <Typography variant="h6" gutterBottom>
-        Click on an existing feature to leave a comment on that feature, or click the "ADD A FEATURE" button to draw a new feature on the map.
+        Click on an existing feature to leave a comment on that feature, or click the "ADD A FEATURE" button to draw a new feature on the map.Double-click when you have finished digitizing the new feature. 
         </Typography>
 
         <Box display="flex" gap={2} mb={2}>
