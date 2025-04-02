@@ -33,10 +33,9 @@ export default function InteractiveReporterApp() {
 
   useEffect(() => {
     const loadMap = async () => {
-      const [MapView, WebMap, Sketch, GraphicsLayer] = await Promise.all([
+      const [MapView, WebMap, GraphicsLayer] = await Promise.all([
         import("@arcgis/core/views/MapView"),
         import("@arcgis/core/WebMap"),
-        import("@arcgis/core/widgets/Sketch"),
         import("@arcgis/core/layers/GraphicsLayer"),
       ]);
 
@@ -53,45 +52,12 @@ export default function InteractiveReporterApp() {
 
       setView(view);
 
-      view.when(async () => {
+      view.when(() => {
         const legend = new Legend({ view });
         if (legendRef.current) legend.container = legendRef.current;
 
         const graphicsLayer = new GraphicsLayer.default();
         view.map.add(graphicsLayer);
-
-        const sketch = new Sketch.default({
-          layer: graphicsLayer,
-          view,
-          creationMode: "single",
-          visibleElements: {
-            createTools: { point: false, polyline: false, rectangle: false, circle: false },
-            selectionTools: { "rectangle-selection": false },
-            undoRedoMenu: false
-          },
-          polygonSymbol: {
-            type: "simple-fill",
-            color: [0, 255, 255, 0.3],
-            outline: {
-              color: [0, 180, 180, 1],
-              width: 2
-            }
-          }
-        });
-
-        sketchRef.current = sketch;
-        view.ui.add(sketch, "top-right");
-
-        sketch.on("create", (event) => {
-          if (event.state === "start") {
-            alert("Sketch mode: Click to place vertices. Double-click to finish the shape.");
-          }
-          if (event.state === "complete") {
-            setDrawnGeometry(event.graphic.geometry);
-            setSelectedFeature(null);
-            setOpen(true);
-          }
-        });
 
         view.on("click", async (event) => {
           const response = await view.hitTest(event);
@@ -108,10 +74,56 @@ export default function InteractiveReporterApp() {
     loadMap();
   }, []);
 
-  const startDrawing = () => {
-    if (sketchRef.current) {
-      sketchRef.current.create("polygon");
+  const startDrawing = async () => {
+    const [Sketch, GraphicsLayer] = await Promise.all([
+      import("@arcgis/core/widgets/Sketch"),
+      import("@arcgis/core/layers/GraphicsLayer"),
+    ]);
+
+    const view = mapRef.current?.view;
+    if (!view) return;
+
+    let graphicsLayer = view.map.layers.find((layer) => layer.title === "User Feedback Layer");
+    if (!graphicsLayer) {
+      graphicsLayer = new GraphicsLayer.default({ title: "User Feedback Layer" });
+      view.map.add(graphicsLayer);
     }
+
+    const sketch = new Sketch.default({
+      layer: graphicsLayer,
+      view,
+      creationMode: "single",
+      visibleElements: {
+        createTools: { point: false, polyline: false, rectangle: false, circle: false },
+        selectionTools: {},
+        undoRedoMenu: false
+      },
+      polygonSymbol: {
+        type: "simple-fill",
+        color: [0, 255, 255, 0.3],
+        outline: {
+          color: [0, 180, 180, 1],
+          width: 2
+        }
+      }
+    });
+
+    sketchRef.current = sketch;
+    view.ui.add(sketch, "top-right");
+
+    sketch.on("create", (event) => {
+      if (event.state === "start") {
+        alert("Sketch mode: Click to place vertices. Double-click to finish the shape.");
+      }
+      if (event.state === "complete") {
+        setDrawnGeometry(event.graphic.geometry);
+        setSelectedFeature(null);
+        setOpen(true);
+        view.ui.remove(sketch);
+      }
+    });
+
+    sketch.create("polygon");
   };
 
   const handleSubmit = async () => {
