@@ -175,16 +175,13 @@ export default function InteractiveReporterApp() {
         <Typography variant="h4" gutterBottom>
           MAG First Draft Open Space Map Feedback
         </Typography>
-        <Typography variant="body1" gutterBottom>
-          To leave feedback, click an existing feature on the map to leave a comment on that feature, or click the "Add a New Feature" button to add a new feature.
+        <Typography variant="h6" gutterBottom>
+          To leave feedback, click the button below and draw a new feature on the map.
         </Typography>
 
         <Box display="flex" gap={2} mb={2}>
           <Button variant="contained" color="primary" onClick={startDrawing}>
             Add A Feature
-          </Button>
-          <Button variant="contained" color="primary" onClick={() => alert("Click a feature on the map to comment.")}> 
-            Comment on an Existing Feature
           </Button>
         </Box>
 
