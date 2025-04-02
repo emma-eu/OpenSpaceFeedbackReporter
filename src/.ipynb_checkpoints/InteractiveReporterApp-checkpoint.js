@@ -173,7 +173,7 @@ export default function InteractiveReporterApp() {
     <Box display="flex" flexDirection="column" alignItems="center" p={4} pb={2}>
       <Box width="100%" maxWidth="1250px">
         <Typography variant="h4" gutterBottom>
-          MAG First Draft Parks/Open Space Map Feedback
+          MAG First Draft Centers Map Feedback
         </Typography>
         <Typography variant="body1" gutterBottom>
           To leave feedback, click a feature on the map to leave a comment on that feature, or draw a new feature.
@@ -189,7 +189,7 @@ export default function InteractiveReporterApp() {
         </Box>
 
         <Card sx={{ my: 2, mb: 1 }}>
-          <CardContent sx={{ height: 600, display: 'flex' }}>
+          <CardContent sx={{ height: 450, display: 'flex' }}>
             <div ref={mapRef} style={{ width: "80%", height: "100%", borderRadius: 2 }} />
             <div ref={legendRef} style={{ width: "20%", minWidth: 200, paddingLeft: 10, overflowY: "auto" }} />
           </CardContent>
@@ -199,10 +199,10 @@ export default function InteractiveReporterApp() {
           <Box sx={{ width: 360, pt: 2, px: 2, pb: 1 }} role="presentation">
             <DialogTitle>Feature Feedback</DialogTitle>
             <DialogContent>
+              <FormControlLabel control={<Checkbox checked={isCenter} onChange={(e) => setisCenter(e.target.checked)} />} label="This feature could be considered regionally significant open space." />
               <TextField label="Your Name" fullWidth margin="dense" value={name} onChange={(e) => setName(e.target.value)} />
               <TextField label="Your City/Organization" fullWidth margin="dense" value={organization} onChange={(e) => setOrganization(e.target.value)} />
               <TextField label="Add Your Comment Here (Optional)" fullWidth margin="dense" multiline rows={4} value={comment} onChange={(e) => setComment(e.target.value)} />
-              <FormControlLabel control={<Checkbox checked={isCenter} onChange={(e) => setisCenter(e.target.checked)} />} label="This feature could be considered regionally significant open space." />
             </DialogContent>
             <DialogActions>
               {drawnGeometry && sketchRef.current && (
