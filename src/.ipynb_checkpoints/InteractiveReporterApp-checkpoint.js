@@ -129,7 +129,7 @@ export default function InteractiveReporterApp() {
     ]);
 
     const responseLayer = new FeatureLayer.default({
-      url: "https://services6.arcgis.com/MLUVmF7LMfvzoHjV/arcgis/rest/services/OpenSpaceResponses/FeatureServer",
+      url: "https://services6.arcgis.com/MLUVmF7LMfvzoHjV/arcgis/rest/services/OpenSpaceResponses/FeatureServer/0",
     });
 
     const geometry = selectedFeature?.geometry || drawnGeometry;
@@ -142,6 +142,7 @@ export default function InteractiveReporterApp() {
         name,
         organization,
         submittedcomment: comment,
+        is_center: isCenter ? 1 : 0,
         submitted_at: new Date().toISOString(),
         related_feature_id: selectedFeature?.attributes?.OBJECTID || null
       },
@@ -164,6 +165,8 @@ export default function InteractiveReporterApp() {
     setComment("");
     setSelectedFeature(null);
     setDrawnGeometry(null);
+    setisCenter(false);
+    setOrganization("");
   };
 
   return (
