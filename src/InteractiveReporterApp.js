@@ -14,8 +14,6 @@ import DialogActions from "@mui/material/DialogActions";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import FormControl from "@mui/material/FormControl";
 import Legend from "@arcgis/core/widgets/Legend"; // ArcGIS Legend widget
 import "@arcgis/core/assets/esri/themes/light/main.css"; // ArcGIS CSS theme
 
