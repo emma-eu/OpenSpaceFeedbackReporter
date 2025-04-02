@@ -16,9 +16,6 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import Legend from "@arcgis/core/widgets/Legend"; // ArcGIS Legend widget
 import "@arcgis/core/assets/esri/themes/light/main.css"; // ArcGIS CSS theme
 
@@ -35,8 +32,6 @@ export default function InteractiveReporterApp() {
   const [organization, setOrganization] = useState("");
   const [comment, setComment] = useState("");
   const [isCenter, setisCenter] = useState(false);
- // const [likesProject, setLikesProject] = useState(false);
- // const [priorityLevel, setPriorityLevel] = useState("");
 
   useEffect(() => {
     const loadMap = async () => {
@@ -127,7 +122,7 @@ export default function InteractiveReporterApp() {
     ]);
 
     const responseLayer = new FeatureLayer.default({
-      url: "https://services6.arcgis.com/MLUVmF7LMfvzoHjV/arcgis/rest/services/CenterResponses/FeatureServer/0",
+      url: "https://services6.arcgis.com/MLUVmF7LMfvzoHjV/arcgis/rest/services/OpenSpaceResponses/FeatureServer",
     });
 
     const geometry = selectedFeature?.geometry || drawnGeometry;
@@ -140,9 +135,6 @@ export default function InteractiveReporterApp() {
         name,
         organization,
         submittedcomment: comment,
-        //is_center: isCenter ? 1 : 0,
-        //correct_type: likesProject ? 1 : 0,
-        //updated_type: priorityLevel,
         submitted_at: new Date().toISOString(),
         related_feature_id: selectedFeature?.attributes?.OBJECTID || null
       },
@@ -163,8 +155,6 @@ export default function InteractiveReporterApp() {
     setOpen(false);
     setName("");
     setComment("");
-    setLikesProject(false);
-    setPriorityLevel("");
     setSelectedFeature(null);
     setDrawnGeometry(null);
   };
@@ -202,21 +192,7 @@ export default function InteractiveReporterApp() {
               <TextField label="Your Name" fullWidth margin="dense" value={name} onChange={(e) => setName(e.target.value)} />
               <TextField label="Your City/Organization" fullWidth margin="dense" value={organization} onChange={(e) => setOrganization(e.target.value)} />
               <TextField label="Add Your Comment Here (Optional)" fullWidth margin="dense" multiline rows={4} value={comment} onChange={(e) => setComment(e.target.value)} />
-              {drawnGeometry ? (
-                <FormControl fullWidth sx={{ mb: 1 }}>
-                  <InputLabel id="center-label">Center Classification</InputLabel>
-                  <Select labelId="center-label" value={priorityLevel} onChange={(e) => setPriorityLevel(e.target.value)}>
-                    <MenuItem value="Metropolitan">Metropolitan</MenuItem>
-                    <MenuItem value="Urban">Urban</MenuItem>
-                    <MenuItem value="City">City</MenuItem>
-                    <MenuItem value="Neighborhood">Neighborhood</MenuItem>
-                  </Select>
-                </FormControl>
-              ) : (
-                <>
-                  <FormControlLabel control={<Checkbox checked={isCenter} onChange={(e) => setisCenter(e.target.checked)} />} label="This feature could be considered regionally significant open space." />
-                </>
-              )}
+              <FormControlLabel control={<Checkbox checked={isCenter} onChange={(e) => setisCenter(e.target.checked)} />} label="This feature could be considered regionally significant open space." />
             </DialogContent>
             <DialogActions>
               {drawnGeometry && sketchRef.current && (
