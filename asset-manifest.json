@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/OpenSpaceFeedbackReporter/static/css/main.d1d42ec2.css",
-    "main.js": "/OpenSpaceFeedbackReporter/static/js/main.87032d11.js",
+    "main.js": "/OpenSpaceFeedbackReporter/static/js/main.214b225a.js",
     "static/js/59453.5d0ed54b.chunk.js": "/OpenSpaceFeedbackReporter/static/js/59453.5d0ed54b.chunk.js",
     "static/js/82195.069c5c87.chunk.js": "/OpenSpaceFeedbackReporter/static/js/82195.069c5c87.chunk.js",
     "static/js/63733.7962ecb5.chunk.js": "/OpenSpaceFeedbackReporter/static/js/63733.7962ecb5.chunk.js",
@@ -561,7 +561,7 @@
     "static/media/SM-Slider_TrackBackground_hover.svg": "/OpenSpaceFeedbackReporter/static/media/SM-Slider_TrackBackground_hover.5dcf34ac7d59f98735ad.svg",
     "static/media/SM-Slider_TrackBackground_idle.svg": "/OpenSpaceFeedbackReporter/static/media/SM-Slider_TrackBackground_idle.cc7bd7014a003ba1844f.svg",
     "main.d1d42ec2.css.map": "/OpenSpaceFeedbackReporter/static/css/main.d1d42ec2.css.map",
-    "main.87032d11.js.map": "/OpenSpaceFeedbackReporter/static/js/main.87032d11.js.map",
+    "main.214b225a.js.map": "/OpenSpaceFeedbackReporter/static/js/main.214b225a.js.map",
     "59453.5d0ed54b.chunk.js.map": "/OpenSpaceFeedbackReporter/static/js/59453.5d0ed54b.chunk.js.map",
     "82195.069c5c87.chunk.js.map": "/OpenSpaceFeedbackReporter/static/js/82195.069c5c87.chunk.js.map",
     "63733.7962ecb5.chunk.js.map": "/OpenSpaceFeedbackReporter/static/js/63733.7962ecb5.chunk.js.map",
@@ -1036,6 +1036,6 @@
   },
   "entrypoints": [
     "static/css/main.d1d42ec2.css",
-    "static/js/main.87032d11.js"
+    "static/js/main.214b225a.js"
   ]
 }
