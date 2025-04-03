@@ -67,7 +67,7 @@ export default function InteractiveReporterApp() {
         infoDiv.style.borderRadius = "4px";
         infoDiv.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
         infoDiv.style.maxWidth = "220px";
-        view.ui.add(infoDiv, "top-left");
+        view.ui.add(infoDiv, "top-right");
 
         view.on("click", async (event) => {
           const response = await view.hitTest(event);
