@@ -1,5 +1,3 @@
-// NOTE: This update fixes the Sketch activation logic so the "Add A Feature" button allows users to start drawing a polygon immediately
-
 import { useEffect, useRef, useState } from "react";
 // Material UI components for layout and UI
 import Card from "@mui/material/Card";
@@ -59,6 +57,17 @@ export default function InteractiveReporterApp() {
         const graphicsLayer = new GraphicsLayer.default();
         graphicsLayer.title = "User Feedback Layer";
         view.map.add(graphicsLayer);
+
+        // Add static text box to the top-left of the map
+        const infoDiv = document.createElement("div");
+        infoDiv.innerHTML = "🛈 Click a feature or draw a new one.";
+        infoDiv.style.padding = "6px 12px";
+        infoDiv.style.background = "rgba(255, 255, 255, 0.8)";
+        infoDiv.style.fontSize = "14px";
+        infoDiv.style.borderRadius = "4px";
+        infoDiv.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
+        infoDiv.style.maxWidth = "220px";
+        view.ui.add(infoDiv, "top-left");
 
         view.on("click", async (event) => {
           const response = await view.hitTest(event);
