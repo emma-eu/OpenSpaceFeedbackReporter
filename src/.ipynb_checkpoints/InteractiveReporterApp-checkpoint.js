@@ -60,10 +60,10 @@ export default function InteractiveReporterApp() {
 
         // Add static text box to the top-left of the map
         const infoDiv = document.createElement("div");
-        infoDiv.innerHTML = "🛈 Click a feature or draw a new one.";
+        infoDiv.innerHTML = "🛈 Use the +/- or two fingers on the screen to zoom. To pan, click and drag the map.";
         infoDiv.style.padding = "6px 12px";
         infoDiv.style.background = "rgba(255, 255, 255, 0.8)";
-        infoDiv.style.fontSize = "14px";
+        infoDiv.style.fontSize = "13px";
         infoDiv.style.borderRadius = "4px";
         infoDiv.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
         infoDiv.style.maxWidth = "220px";
