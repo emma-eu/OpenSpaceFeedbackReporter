@@ -176,7 +176,7 @@ export default function InteractiveReporterApp() {
           MAG First Draft Open Space Map Feedback
         </Typography>
         <Typography variant="h6" gutterBottom>
-        Click on an existing feature to leave a comment on that feature, or click the "ADD A FEATURE" button to draw a new feature on the map.Double-click when you have finished digitizing the new feature. 
+        Click on an existing feature to leave a comment on that feature, or click the "ADD A FEATURE" button to draw a new feature on the map. Double-click when you have finished digitizing the new feature. 
         </Typography>
 
         <Box display="flex" gap={2} mb={2}>
@@ -186,7 +186,7 @@ export default function InteractiveReporterApp() {
         </Box>
 
         <Card sx={{ my: 2, mb: 1 }}>
-          <CardContent sx={{ height: 450, display: 'flex' }}>
+          <CardContent sx={{ height: 500, display: 'flex' }}>
             <div ref={mapRef} style={{ width: "80%", height: "100%", borderRadius: 2 }} />
             <div ref={legendRef} style={{ width: "20%", minWidth: 200, paddingLeft: 10, overflowY: "auto" }} />
           </CardContent>
