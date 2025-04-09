@@ -166,20 +166,6 @@ export default function InteractiveReporterApp() {
         <Typography variant="h4" gutterBottom>
           MAG First Draft Parks and Open Space Map Feedback
         </Typography>
-        <Typography variant="h6" gutterBottom>
-          <>
-            Click on an existing feature to activate the comment form and leave a comment on that feature.
-            <br />
-            You can also click the "ADD A FEATURE" button to draw a new feature on the map.
-            <strong> Double-click </strong>
-            when you have finished digitizing the new feature and then enter your information/comment in the form that appears.
-            <br />
-            <strong>
-              Please note that your edits or new features will not be saved unless you click the blue SUBMIT FEEDBACK button in the pop-up comment form.
-            </strong>
-          </>
-        </Typography>
-
         <Box display="flex" gap={2} mb={2}>
           <Button variant="contained" color="primary" onClick={startDrawing}>
             Add A Feature
