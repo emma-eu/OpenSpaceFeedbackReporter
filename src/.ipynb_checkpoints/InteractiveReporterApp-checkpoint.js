@@ -164,12 +164,11 @@ export default function InteractiveReporterApp() {
     <Box display="flex" flexDirection="column" alignItems="center" p={4} pb={2}>
       <Box width="100%" maxWidth="1250px">
         <Typography variant="h4" gutterBottom>
-          MAG First Draft Significant Land Uses Map Feedback
+          MAG First Draft Parks and Open Space Map Feedback
         </Typography>
         <Typography variant="h6" gutterBottom>
           <>
             Click on an existing feature to activate the comment form and leave a comment on that feature.
-            If the classification for the existing feature is incorrect, select the correct classification.
             <br />
             You can also click the "ADD A FEATURE" button to draw a new feature on the map.
             <strong> Double-click </strong>
@@ -200,7 +199,7 @@ export default function InteractiveReporterApp() {
             <DialogContent>
               <TextField label="Your Name" fullWidth margin="dense" value={name} onChange={(e) => setName(e.target.value)} />
               <TextField label="Your City/Organization" fullWidth margin="dense" value={organization} onChange={(e) => setOrganization(e.target.value)} />
-              <FormControlLabel control={<Checkbox checked={isCenter} onChange={(e) => setIsCenter(e.target.checked)} />} label="This feature is correctly classified." />
+              <FormControlLabel control={<Checkbox checked={isCenter} onChange={(e) => setIsCenter(e.target.checked)} />} label="This feature could be considered regionally significant open space." />
               <TextField label="Comment Here (Optional)" fullWidth margin="dense" multiline rows={4} value={comment} onChange={(e) => setComment(e.target.value)} />
             </DialogContent>
             <DialogActions>
