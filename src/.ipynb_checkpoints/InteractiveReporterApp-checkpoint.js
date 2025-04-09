@@ -40,7 +40,7 @@ export default function InteractiveReporterApp() {
       ]);
 
       const webmap = new WebMap.default({
-        portalItem: { id: "18f4d3e4ab4045a48c80553a693294bb" },
+        portalItem: { id: "4b41859317b04d92af10398a0611bd38" },
       });
 
       const view = new MapView.default({
@@ -120,7 +120,7 @@ export default function InteractiveReporterApp() {
     ]);
 
     const responseLayer = new FeatureLayer.default({
-      url: "https://services6.arcgis.com/MLUVmF7LMfvzoHjV/arcgis/rest/services/CenterResponses/FeatureServer/0",
+      url: "https://services6.arcgis.com/MLUVmF7LMfvzoHjV/arcgis/rest/services/OpenSpaceResponses/FeatureServer",
     });
 
     const geometry = selectedFeature?.geometry || drawnGeometry;
