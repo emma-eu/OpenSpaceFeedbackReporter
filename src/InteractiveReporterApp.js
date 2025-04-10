@@ -109,7 +109,7 @@ export default function InteractiveReporterApp() {
             const isDrawn = graphic.attributes?.feature_origin === 1;
             const hasNoObjectId = !graphic.attributes?.OBJECTID;
 
-            if (isDrawn && hasNoObjectId && sketchRef.current) {
+            if (isDrawn && hasNoObjectId) {
               sketch.update([graphic], { tool: "reshape" });
               setSelectedFeature(graphic);
               setDrawnGeometry(graphic.geometry);
