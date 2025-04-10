@@ -109,6 +109,7 @@ export default function InteractiveReporterApp() {
             const isFromSketchLayer = graphic.layer === graphicsLayer;
 
             if (isFromSketchLayer) {
+              sketch.update([graphic], { tool: "reshape" });
               setSelectedFeature(graphic);
               setDrawnGeometry(graphic.geometry);
               setOpen(true);
