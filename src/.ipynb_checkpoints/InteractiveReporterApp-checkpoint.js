@@ -61,7 +61,7 @@ export default function InteractiveReporterApp() {
         view.map.add(graphicsLayer);
 
         const infoDiv = document.createElement("div");
-        infoDiv.innerHTML = "🛈 Use the +/- or two fingers on your trackpad to zoom. Click and drag to pan. To close a feature's informational popup, click the X in the popup's upper right corner or click elsewhere on the map.";
+        infoDiv.innerHTML = "🛈 Use the +/- or two fingers on your trackpad to zoom. Click and drag to pan. To close a popup, click its X or click elsewhere on the map.";
         infoDiv.style.padding = "6px 12px";
         infoDiv.style.background = "rgba(255, 255, 255, 0.9)";
         infoDiv.style.fontSize = "13px";
