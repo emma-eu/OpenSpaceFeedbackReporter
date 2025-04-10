@@ -13,12 +13,14 @@ import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Legend from "@arcgis/core/widgets/Legend";
+import Graphic from "@arcgis/core/Graphic";
 import "@arcgis/core/assets/esri/themes/light/main.css";
 
 export default function InteractiveReporterApp() {
   const mapRef = useRef(null);
   const legendRef = useRef(null);
   const sketchRef = useRef(null);
+  const graphicsLayerRef = useRef(null);
 
   const [open, setOpen] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
@@ -52,6 +54,7 @@ export default function InteractiveReporterApp() {
       view.when(() => {
         view.popup.autoOpenEnabled = false;
         const graphicsLayer = new GraphicsLayer.default({ popupEnabled: false });
+        graphicsLayerRef.current = graphicsLayer;
         view.map.add(graphicsLayer);
 
         const infoDiv = document.createElement("div");
@@ -106,18 +109,21 @@ export default function InteractiveReporterApp() {
             const isDrawn = graphic.attributes?.feature_origin === 1;
 
             if (isDrawn) {
-              setSelectedFeature(graphic);
-              setDrawnGeometry(graphic.geometry);
-              setOpen(true);
+              const existingGraphic = graphicsLayer.graphics.find(g => g === graphic);
+              if (existingGraphic) {
+                setSelectedFeature(existingGraphic);
+                setDrawnGeometry(existingGraphic.geometry);
+                setOpen(true);
+              }
             } else {
               const clonedGeometry = graphic.geometry.clone();
-              const commentGraphic = {
+              const commentGraphic = new Graphic({
                 geometry: clonedGeometry,
                 attributes: {
                   feature_origin: 0,
                   OBJECTID: graphic.attributes?.OBJECTID,
                 },
-              };
+              });
               setSelectedFeature(commentGraphic);
               setDrawnGeometry(clonedGeometry);
               setOpen(true);
