@@ -106,9 +106,9 @@ export default function InteractiveReporterApp() {
 
           if (result) {
             const graphic = result.graphic;
-            const isInSketchLayer = graphicsLayer.graphics.includes(graphic);
+            const isDrawn = graphicsLayer.graphics.includes(graphic);
 
-            if (isInSketchLayer) {
+            if (isDrawn) {
               sketch.update([graphic], { tool: "reshape" });
               setSelectedFeature(graphic);
               setDrawnGeometry(graphic.geometry);
@@ -176,7 +176,7 @@ export default function InteractiveReporterApp() {
     }
 
     setOpen(false);
-    if (sketchRef.current && selectedFeature?.attributes?.feature_origin === 1) {
+    if (sketchRef.current && graphicsLayerRef.current?.graphics.includes(selectedFeature)) {
       sketchRef.current.layer.remove(selectedFeature);
     }
     setName("");
