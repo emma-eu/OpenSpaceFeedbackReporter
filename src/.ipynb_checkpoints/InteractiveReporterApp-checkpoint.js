@@ -106,15 +106,12 @@ export default function InteractiveReporterApp() {
 
           if (result) {
             const graphic = result.graphic;
-            const isDrawn = graphic.attributes?.feature_origin === 1;
+            const isFromSketchLayer = graphic.layer === graphicsLayer;
 
-            if (isDrawn) {
-              const existingGraphic = graphicsLayer.graphics.find(g => g === graphic);
-              if (existingGraphic) {
-                setSelectedFeature(existingGraphic);
-                setDrawnGeometry(existingGraphic.geometry);
-                setOpen(true);
-              }
+            if (isFromSketchLayer) {
+              setSelectedFeature(graphic);
+              setDrawnGeometry(graphic.geometry);
+              setOpen(true);
             } else {
               const clonedGeometry = graphic.geometry.clone();
               const commentGraphic = new Graphic({
@@ -189,7 +186,7 @@ export default function InteractiveReporterApp() {
     setOrganization("");
   };
 
-  const isUserCreatedFeature = selectedFeature?.attributes?.feature_origin === 1;
+  const isUserCreatedFeature = selectedFeature?.layer === graphicsLayerRef.current;
   const handleDeleteSketch = () => {
     if (isUserCreatedFeature && !selectedFeature.attributes?.OBJECTID && sketchRef.current) {
       sketchRef.current.layer.remove(selectedFeature);
