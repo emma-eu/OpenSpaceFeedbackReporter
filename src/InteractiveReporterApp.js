@@ -14,10 +14,6 @@ import DialogActions from "@mui/material/DialogActions";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import Legend from "@arcgis/core/widgets/Legend";
 import "@arcgis/core/assets/esri/themes/light/main.css";
 
@@ -34,15 +30,15 @@ export default function InteractiveReporterApp() {
   const [organization, setOrganization] = useState("");
   const [comment, setComment] = useState("");
   const [isCenter, setisCenter] = useState(false);
-  const [priorityLevel, setPriorityLevel] = useState("");
 
   useEffect(() => {
     const loadMap = async () => {
-      const [MapView, WebMap, Sketch, GraphicsLayer] = await Promise.all([
+      const [MapView, WebMap, Sketch, GraphicsLayer, Graphic] = await Promise.all([
         import("@arcgis/core/views/MapView"),
         import("@arcgis/core/WebMap"),
         import("@arcgis/core/widgets/Sketch"),
-        import("@arcgis/core/layers/GraphicsLayer")
+        import("@arcgis/core/layers/GraphicsLayer"),
+        import("@arcgis/core/Graphic")
       ]);
 
       const webmap = new WebMap.default({
@@ -109,13 +105,9 @@ export default function InteractiveReporterApp() {
           if (event.state === "complete") {
             const userGraphic = event.graphic;
             userGraphic.attributes = { feature_origin: 1 };
-            // Removed this line to prevent duplicate graphics and allow sketch removal
-
-            // Allow users to continue editing their shape
             sketch.update([userGraphic], {
               tool: "reshape"
             });
-
             setSelectedFeature(userGraphic);
             setDrawnGeometry(userGraphic.geometry);
             setOpen(true);
@@ -136,13 +128,13 @@ export default function InteractiveReporterApp() {
               setOpen(true);
             } else {
               const clonedGeometry = graphic.geometry.clone();
-              const commentGraphic = {
+              const commentGraphic = new Graphic.default({
                 geometry: clonedGeometry,
                 attributes: {
                   feature_origin: 0,
                   OBJECTID: graphic.attributes?.OBJECTID
                 }
-              };
+              });
               setSelectedFeature(commentGraphic);
               setDrawnGeometry(clonedGeometry);
               setOpen(true);
@@ -198,31 +190,30 @@ export default function InteractiveReporterApp() {
 
     setOpen(false);
     if (sketchRef.current && selectedFeature?.attributes?.feature_origin === 1) {
-                  sketchRef.current.layer.remove(selectedFeature);
-                }
+      sketchRef.current.layer.remove(selectedFeature);
+    }
     setName("");
     setComment("");
     setSelectedFeature(null);
     setDrawnGeometry(null);
     setisCenter(false);
     setOrganization("");
-    setPriorityLevel("");
   };
 
   const isUserCreatedFeature = selectedFeature?.attributes?.feature_origin === 1;
-    const handleDeleteSketch = () => {
-  if (
-    selectedFeature &&
-    selectedFeature.attributes?.feature_origin === 1 &&
-    !selectedFeature.attributes?.OBJECTID &&
-    sketchRef.current
-  ) {
-    sketchRef.current.layer.remove(selectedFeature);
-  }
-  setOpen(false);
-  setSelectedFeature(null);
-  setDrawnGeometry(null);
-};
+  const handleDeleteSketch = () => {
+    if (
+      selectedFeature &&
+      selectedFeature.attributes?.feature_origin === 1 &&
+      !selectedFeature.attributes?.OBJECTID &&
+      sketchRef.current
+    ) {
+      sketchRef.current.layer.remove(selectedFeature);
+    }
+    setOpen(false);
+    setSelectedFeature(null);
+    setDrawnGeometry(null);
+  };
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" p={4} pb={2}>
@@ -257,9 +248,7 @@ export default function InteractiveReporterApp() {
               <TextField label="Comment Here (Optional)" fullWidth margin="dense" multiline rows={4} value={comment} onChange={(e) => setComment(e.target.value)} />
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleDeleteSketch} color="secondary">
-                DELETE SKETCH
-              </Button>
+              {isUserCreatedFeature && <Button onClick={handleDeleteSketch} color="secondary">DELETE SKETCH</Button>}
               <Button onClick={() => {
                 setOpen(false);
                 if (
