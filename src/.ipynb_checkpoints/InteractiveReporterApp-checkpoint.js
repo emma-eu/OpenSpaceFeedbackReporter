@@ -126,6 +126,7 @@ export default function InteractiveReporterApp() {
               setSelectedFeature(graphic);
               setDrawnGeometry(graphic.geometry);
               setOpen(true);
+              sketch.update([graphic], { tool: "reshape" });
             } else {
               const clonedGeometry = graphic.geometry.clone();
               const commentGraphic = new Graphic.default({
@@ -234,7 +235,12 @@ export default function InteractiveReporterApp() {
           </CardContent>
         </Card>
 
-        <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
+        <Drawer anchor="right" open={open} onClose={() => {
+          if (sketchRef.current) {
+            sketchRef.current.update([]); // clear edit selection
+          }
+          setOpen(false);
+        }}>
           <Box sx={{ width: 360, pt: 2, px: 2, pb: 1 }} role="presentation">
             <DialogTitle>Center Comment Form</DialogTitle>
             <DialogContent>
@@ -250,14 +256,10 @@ export default function InteractiveReporterApp() {
             <DialogActions>
               {isUserCreatedFeature && <Button onClick={handleDeleteSketch} color="secondary">DELETE SKETCH</Button>}
               <Button onClick={() => {
-                setOpen(false);
-                if (
-                  sketchRef.current &&
-                  selectedFeature?.attributes?.feature_origin === 1 &&
-                  sketchRef.current.layer.graphics.includes(selectedFeature)
-                ) {
-                  sketchRef.current.layer.remove(selectedFeature);
+                if (sketchRef.current) {
+                  sketchRef.current.update([]); // clear edit selection
                 }
+                setOpen(false);
                 setSelectedFeature(null);
                 setDrawnGeometry(null);
               }}>Cancel</Button>
