@@ -1,7 +1,5 @@
-// NOTE: This update ensures the layout mirrors the OpenSpaceFeedbackReporter app: static textbox, zoom top-left, and sidebar legend — with extra tools removed.
-
+// Updated version that combines your original app structure with improved layout and tool restrictions per OpenSpaceFeedbackReporter
 import { useEffect, useRef, useState } from "react";
-// Material UI components for layout and UI
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
@@ -51,11 +49,11 @@ export default function InteractiveReporterApp() {
         ui: { components: ["zoom", "attribution"] },
       });
 
-      view.when(async () => {
-        const graphicsLayer = new GraphicsLayer.default();
+      view.when(() => {
+        view.popup.autoOpenEnabled = false;
+        const graphicsLayer = new GraphicsLayer.default({ popupEnabled: false });
         view.map.add(graphicsLayer);
 
-        // Add static info box to top-left
         const infoDiv = document.createElement("div");
         infoDiv.innerHTML = "🛈 Use the +/- to zoom. Click and drag to pan.";
         infoDiv.style.padding = "6px 12px";
@@ -72,16 +70,17 @@ export default function InteractiveReporterApp() {
           layer: graphicsLayer,
           view,
           creationMode: "single",
+          updateOnGraphicClick: false,
           visibleElements: {
             createTools: { point: false, polyline: false, rectangle: false, circle: false },
             selectionTools: { "rectangle-selection": false },
-            undoRedoMenu: false
+            undoRedoMenu: false,
           },
           polygonSymbol: {
             type: "simple-fill",
             color: [0, 255, 255, 0.3],
-            outline: { color: [0, 180, 180, 1], width: 2 }
-          }
+            outline: { color: [0, 180, 180, 1], width: 2 },
+          },
         });
 
         sketchRef.current = sketch;
@@ -89,8 +88,11 @@ export default function InteractiveReporterApp() {
         sketch.on("create", (event) => {
           if (event.state === "start") alert("Sketch mode: Click to place vertices. Double-click to finish the shape.");
           if (event.state === "complete") {
-            setDrawnGeometry(event.graphic.geometry);
-            setSelectedFeature(null);
+            const graphic = event.graphic;
+            graphic.attributes = { feature_origin: 1 };
+            sketch.update([graphic], { tool: "reshape" });
+            setSelectedFeature(graphic);
+            setDrawnGeometry(graphic.geometry);
             setOpen(true);
           }
         });
@@ -99,8 +101,17 @@ export default function InteractiveReporterApp() {
           const response = await view.hitTest(event);
           const result = response.results.find((r) => r.graphic?.attributes);
           if (result) {
-            setSelectedFeature(result.graphic);
-            setDrawnGeometry(null);
+            const graphic = result.graphic;
+            const clonedGeometry = graphic.geometry.clone();
+            const commentGraphic = {
+              geometry: clonedGeometry,
+              attributes: {
+                feature_origin: 0,
+                OBJECTID: graphic.attributes?.OBJECTID
+              }
+            };
+            setSelectedFeature(commentGraphic);
+            setDrawnGeometry(clonedGeometry);
             setOpen(true);
           }
         });
@@ -129,7 +140,7 @@ export default function InteractiveReporterApp() {
     const newFeature = {
       geometry,
       attributes: {
-        feature_origin: drawnGeometry ? 1 : 0,
+        feature_origin: selectedFeature?.attributes?.feature_origin || 0,
         name,
         organization,
         submittedcomment: comment,
@@ -152,12 +163,25 @@ export default function InteractiveReporterApp() {
     }
 
     setOpen(false);
+    if (sketchRef.current && selectedFeature?.attributes?.feature_origin === 1) {
+      sketchRef.current.layer.remove(selectedFeature);
+    }
     setName("");
     setComment("");
     setSelectedFeature(null);
     setDrawnGeometry(null);
     setIsCenter(false);
     setOrganization("");
+  };
+
+  const isUserCreatedFeature = selectedFeature?.attributes?.feature_origin === 1;
+  const handleDeleteSketch = () => {
+    if (isUserCreatedFeature && !selectedFeature.attributes?.OBJECTID && sketchRef.current) {
+      sketchRef.current.layer.remove(selectedFeature);
+    }
+    setOpen(false);
+    setSelectedFeature(null);
+    setDrawnGeometry(null);
   };
 
   return (
@@ -189,6 +213,7 @@ export default function InteractiveReporterApp() {
               <TextField label="Comment Here (Optional)" fullWidth margin="dense" multiline rows={4} value={comment} onChange={(e) => setComment(e.target.value)} />
             </DialogContent>
             <DialogActions>
+              {isUserCreatedFeature && <Button onClick={handleDeleteSketch} color="secondary">DELETE SKETCH</Button>}
               <Button onClick={() => setOpen(false)}>Cancel</Button>
               <Button onClick={handleSubmit} variant="contained" color="primary">Submit Feedback</Button>
             </DialogActions>
