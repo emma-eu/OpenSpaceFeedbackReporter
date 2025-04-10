@@ -1,4 +1,4 @@
-// Updated version that combines your original app structure with improved layout and tool restrictions per OpenSpaceFeedbackReporter
+// Updated version fully aligned with ReporterApp logic and workflow
 import { useEffect, useRef, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -99,20 +99,29 @@ export default function InteractiveReporterApp() {
 
         view.on("click", async (event) => {
           const response = await view.hitTest(event);
-          const result = response.results.find((r) => r.graphic?.attributes);
+          const result = response.results.find((r) => r.graphic?.geometry);
+
           if (result) {
             const graphic = result.graphic;
-            const clonedGeometry = graphic.geometry.clone();
-            const commentGraphic = {
-              geometry: clonedGeometry,
-              attributes: {
-                feature_origin: 0,
-                OBJECTID: graphic.attributes?.OBJECTID
-              }
-            };
-            setSelectedFeature(commentGraphic);
-            setDrawnGeometry(clonedGeometry);
-            setOpen(true);
+            const isDrawn = graphic.attributes?.feature_origin === 1;
+
+            if (isDrawn) {
+              setSelectedFeature(graphic);
+              setDrawnGeometry(graphic.geometry);
+              setOpen(true);
+            } else {
+              const clonedGeometry = graphic.geometry.clone();
+              const commentGraphic = {
+                geometry: clonedGeometry,
+                attributes: {
+                  feature_origin: 0,
+                  OBJECTID: graphic.attributes?.OBJECTID,
+                },
+              };
+              setSelectedFeature(commentGraphic);
+              setDrawnGeometry(clonedGeometry);
+              setOpen(true);
+            }
           }
         });
       });
@@ -131,7 +140,7 @@ export default function InteractiveReporterApp() {
     ]);
 
     const responseLayer = new FeatureLayer.default({
-      url: "https://services6.arcgis.com/MLUVmF7LMfvzoHjV/arcgis/rest/services/OpenSpaceResponses/FeatureServer",
+      url: "https://services6.arcgis.com/MLUVmF7LMfvzoHjV/arcgis/rest/services/OpenSpaceResponses/FeatureServer/0",
     });
 
     const geometry = selectedFeature?.geometry || drawnGeometry;
